@@ -6,15 +6,18 @@ const TaskList = (props) => {
     
   const taskComponents = props.tasks.map((task, i) => {
       return(
-      <div key={i} className="container">
+      <ul className="container">
+      <li key={i} className="task">
         <Task 
-        title={task.title} 
-        content={task.content} 
-        complete={task.complete} 
-        id={task.id}
-        onUpdateTask={props.onUpdateTask}
-        onDeleteTask={props.onDeleteTask}/>
-      </div>);
+          title={task.title} 
+          content={task.content} 
+          complete={task.complete} 
+          id={task.id}
+          onUpdateTask={props.onUpdateTask}
+          onDeleteTask={props.onDeleteTask}
+        />
+      </li>
+      </ul>);
     });
 
   return (

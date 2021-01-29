@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import './App.css';
+import NewTaskForm from './components/NewTaskForm';
 import TaskList from './components/TaskList'
 
 const tasksData = [
@@ -45,6 +46,21 @@ const tasksData = [
 function App() {
   const [taskList, setTaskList] = useState(tasksData);
 
+  const addTask = (task) => {
+    const newTaskList = [...taskList];
+
+    const nextId = Math.max(...newTaskList.map(task => task.id)) + 1
+
+    newTaskList.push({
+      id: nextId,
+      title: task.title,
+      content: task.content,
+      complete: false,
+    });
+
+    setTaskList(newTaskList);
+  }
+
   const updateTask = (updatedTask) => {
     const tasks = [];
 
@@ -76,6 +92,7 @@ function App() {
 
   return (
     <div className="App">
+      <NewTaskForm addTaskCallback={addTask}/>
       <TaskList 
         tasks={taskList} 
         onUpdateTask={updateTask}
