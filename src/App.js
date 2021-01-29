@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './App.css';
+import axios from 'axios';
 import NewTaskForm from './components/NewTaskForm';
 import TaskList from './components/TaskList'
 
@@ -44,7 +45,20 @@ const tasksData = [
 
 
 function App() {
-  const [taskList, setTaskList] = useState(tasksData);
+  const [taskList, setTaskList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  useEffect(() =>{
+    axios.get("http://localhost:5000/")
+      .then((response) => {
+        const apiTaskList = response.data
+        setTaskList(apiTaskList)
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+        console.log(error.message);
+      });
+    }, []);
 
   const addTask = (task) => {
     const newTaskList = [...taskList];
@@ -92,6 +106,7 @@ function App() {
 
   return (
     <div className="App">
+      { errorMessage ? <div><h2 className="error-msg">{errorMessage}</h2></div> : '' }
       <NewTaskForm addTaskCallback={addTask}/>
       <TaskList 
         tasks={taskList} 
