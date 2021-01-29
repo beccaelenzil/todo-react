@@ -4,45 +4,6 @@ import axios from 'axios';
 import NewTaskForm from './components/NewTaskForm';
 import TaskList from './components/TaskList'
 
-const tasksData = [
-  {
-    title: "Learn Flask",
-    content: "make an api",
-    complete: false,
-    id: 1
-  },
-  {
-    title: "Review React",
-    content: "make a tasklist front end",
-    complete: false,
-    id: 2
-  },
-  {
-    title: "Ada Build",
-    content: "make video lessons",
-    complete: false,
-    id: 3
-  },
-  {
-    title: "Learn Flask",
-    content: "make an api",
-    complete: false,
-    id: 4
-  },
-  {
-    title: "Review React",
-    content: "make a tasklist front end",
-    complete: false,
-    id: 5
-  },
-  {
-    title: "Ada Build",
-    content: "make video lessons",
-    complete: false,
-    id: 6
-  },
-];
-
 
 function App() {
   const [taskList, setTaskList] = useState([]);
@@ -61,18 +22,20 @@ function App() {
     }, []);
 
   const addTask = (task) => {
-    const newTaskList = [...taskList];
 
-    const nextId = Math.max(...newTaskList.map(task => task.id)) + 1
+    axios.post("http://localhost:5000/tasks", task)
+      .then((response) => {
+        // What should we do when we know the post request worked?
+        const newTasks = [...taskList, response.data]
+        setTaskList(newTasks);
+        setErrorMessage('');
 
-    newTaskList.push({
-      id: nextId,
-      title: task.title,
-      content: task.content,
-      complete: false,
-    });
 
-    setTaskList(newTaskList);
+      })
+      .catch((error) => {
+        // What should we do when we know the post request failed?
+        setErrorMessage(error.message);
+      });
   }
 
   const updateTask = (updatedTask) => {
