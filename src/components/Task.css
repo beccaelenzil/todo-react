@@ -1,0 +1,15 @@
+.task {
+    background: lightblue;
+    border: black;
+    width: 250px;
+    height: 100px;
+}
+
+.done {
+    color:darkgreen;
+    text-decoration: line-through
+}
+
+.incomplete {
+    color:darkred;
+}
